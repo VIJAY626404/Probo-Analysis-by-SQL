@@ -37,25 +37,99 @@ India wins 63 matches, making Option C the winner. The goal is to proportionatel
 
 **SQL Query:**
 ```sql
-WITH total_non_winner_amount AS (
-    SELECT SUM(Amount) AS total_amount
-    FROM investments
-    WHERE Poll_Option_Id IN ('A', 'B', 'D')
-),
-total_winner_amount AS (
-    SELECT SUM(Amount) AS total_amount
-    FROM investments
-    WHERE Poll_Option_Id = 'C'
-),
-user_winner_contributions AS (
-    SELECT User_ID, Amount
-    FROM investments
-    WHERE Poll_Option_Id = 'C'
+    WITH total_non_winner_amount AS (
+        SELECT SUM(Amount) AS total_amount
+        FROM investments
+        WHERE Poll_Option_Id IN ('A', 'B', 'D')
+    ),
+    total_winner_amount AS (
+        SELECT SUM(Amount) AS total_amount
+        FROM investments
+        WHERE Poll_Option_Id = 'C'
+    ),
+    user_winner_contributions AS (
+        SELECT User_ID, Amount
+        FROM investments
+        WHERE Poll_Option_Id = 'C'
+    )
+    SELECT 
+        u.User_ID,
+        ROUND((u.Amount / t.total_amount) * nw.total_amount, 2) AS Returns
+    FROM 
+        user_winner_contributions u,
+        total_winner_amount t,
+        total_non_winner_amount nw;
+```
+
+### 2. Sales Data Analysis
+**Scenario:**
+We have city and month-wise sales data for 2020. The objective is to generate a table with:
+
+- Sales
+- Previous Month's Sales
+- Next Month's Sales
+- Year-to-Date (YTD) Sales
+India wins 63 matches, making Option C the winner. The goal is to proportionately distribute the total money invested in non-winning options (A, B, and D) among users who invested in Option C.
+
+**Solution:**
+
+- **Previous Month's Sales:** Retrieve sales data from the previous month using window functions.
+- **Next Month's Sales:** Retrieve sales data for the next month.
+- **YTD Sales:** Compute cumulative sales up to the current month.
+**SQL Query:**
+```sql
+   WITH sales_data AS (
+    SELECT 
+        City, 
+        Year, 
+        Month, 
+        Sales, 
+        LAG(Sales) OVER (PARTITION BY City, Year ORDER BY Month) AS Previous_Month_Sales,
+        LEAD(Sales) OVER (PARTITION BY City, Year ORDER BY Month) AS Next_Month_Sales,
+        SUM(Sales) OVER (PARTITION BY City, Year ORDER BY Month ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS YTD_Sales
+    FROM sales
 )
 SELECT 
-    u.User_ID,
-    ROUND((u.Amount / t.total_amount) * nw.total_amount, 2) AS Returns
-FROM 
-    user_winner_contributions u,
-    total_winner_amount t,
-    total_non_winner_amount nw;
+    City, 
+    Year, 
+    Month, 
+    Sales, 
+    Previous_Month_Sales,
+    Next_Month_Sales,
+    YTD_Sales
+FROM sales_data
+ORDER BY City, Year, Month;
+
+```
+## 🚀 How to Use
+
+1. **Clone the Repository**:
+    ```bash
+    git clone <[repository-url](https://github.com/VIJAY626404/Probo-Analysis-by-SQL.git)>
+    ```
+
+2. **Navigate to the Project Directory**:
+    ```bash
+    cd Probo-Analysis-by-SQL
+    ```
+
+3. **Run the SQL Queries**:
+    Use the SQL scripts in the `Sql Queries` folder with MySQL to execute and analyze the data.
+
+4. **View the Presentation**:
+    Open `Pizzahut Sql Project.pdf` to review the detailed results and insights.
+   
+## 🔗 Related Links
+
+- [MySQL Documentation](https://dev.mysql.com/doc/)
+- [SQL Join Operations](https://www.w3schools.com/sql/sql_join.asp)
+- [SQL Aggregate Functions](https://www.w3schools.com/sql/sql_func_aggregate.asp)
+
+## 📩 Contact
+
+For any questions or feedback, feel free to reach out to me at vijaykumarshah1942@gmail.com
+
+## 📜 License
+This repository is licensed under the MIT License. See This project is licensed under the MIT License. See the [LICENSE](https://github.com/VIJAY626404/Probo-Analysis-by-SQL/blob/main/LICENSE) file for details.
+
+
