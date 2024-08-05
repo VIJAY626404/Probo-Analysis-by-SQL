@@ -130,6 +130,6 @@ ORDER BY City, Year, Month;
 For any questions or feedback, feel free to reach out to me at vijaykumarshah1942@gmail.com
 
 ## 📜 License
-This repository is licensed under the MIT License. See This project is licensed under the MIT License. See the [LICENSE](https://github.com/VIJAY626404/Probo-Analysis-by-SQL/blob/main/LICENSE) file for details.
 
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/VIJAY626404/Probo-Analysis-by-SQL/blob/main/LICENSE) file for details.
 
