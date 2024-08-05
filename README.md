@@ -116,9 +116,7 @@ ORDER BY City, Year, Month;
 3. **Run the SQL Queries**:
     Use the SQL scripts in the `Sql Queries` folder with MySQL to execute and analyze the data.
 
-4. **View the Presentation**:
-    Open `Pizzahut Sql Project.pdf` to review the detailed results and insights.
-   
+
 ## 🔗 Related Links
 
 - [MySQL Documentation](https://dev.mysql.com/doc/)
